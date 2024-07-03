@@ -7,11 +7,12 @@ RogueConverter is a C# tool that converts all blocks to diagonal/rectrangle prop
 ## How to use
 - Put .exe in folder with .rbe files (Diabotical map folder - `%appdata%/Diabotical/Maps`)
   
-   ![image](https://github.com/dhcold/RogueConverter/assets/30022484/f44553c9-f36d-4454-aaa1-8de6a8fc15c4)
+  ![image](https://github.com/dhcold/RogueConverter/assets/30022484/f44553c9-f36d-4454-aaa1-8de6a8fc15c4)
 - It will read every .rbe map in that folder, after that you can select which map to convert
-   ![image](https://github.com/dhcold/RogueConverter/assets/30022484/6a315065-a71c-4f16-9d4a-b49bf73242c7)
-- After executing it will automatically generate new file in Diabotical Rogue folder (`%appdata%/DiaboticalRogue/Maps`) with postfix `_rogue`. You can edit ported map right away, by typing (or copy it from output) command to in-game console `/edit mapname_rogue` 
-   ![image](https://github.com/dhcold/RogueConverter/assets/30022484/8406f085-0273-4814-8e6c-4dc9a2f70ca9)
+  ![image](https://github.com/dhcold/RogueConverter/assets/30022484/6a315065-a71c-4f16-9d4a-b49bf73242c7)
+- After executing it will automatically generate new file in Diabotical Rogue folder (`%appdata%/DiaboticalRogue/Maps`) with postfix `_rogue`
+  ![image](https://github.com/dhcold/RogueConverter/assets/30022484/8406f085-0273-4814-8e6c-4dc9a2f70ca9)
+- You can edit ported map right away, by typing (or copy it from output) command to in-game console `/edit mapname_rogue` 
 
 
 ## Additional info
