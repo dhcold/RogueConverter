@@ -18,7 +18,7 @@ RogueConverter is a C# tool that converts all blocks to diagonal/rectrangle prop
 
 ## Additional info
 1. It respects block type (diagonal/solid) and creates corresponded prop
-2. You can select if block material should be taken into consideration while converting blocks (so you can get different material on converted props as well. Otherwise every prop will be same color)
+2. You can select if block material should be taken into consideration while converting blocks (so you can get different material on converted props as well. Otherwise every prop will be same material)
 3. It removes any original prop, that starts with "prop_" and isn't invis prop
 4. All other entities (triggers, tps, lights, etc) stays the same
 5. I tried to convert ramps, but they are misplaced for now (maybe i'll found solution for converting any 'invis' props into new 'blockout' props)
