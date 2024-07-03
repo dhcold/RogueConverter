@@ -1,4 +1,5 @@
 # RogueConverter
+## What it does
 RogueConverter is a C# tool that converts all blocks to diagonal/rectrangle props. It reads map data and writing it again.
 
 ## Download .exe
