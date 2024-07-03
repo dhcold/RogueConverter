@@ -5,7 +5,7 @@ RogueConverter is a C# tool that converts all blocks to diagonal/rectrangle prop
 [DOWNLOAD HERE](https://github.com/dhcold/RogueConverter/releases/tag/exe)
 
 ## How to use
-Put .exe in folder with .rbe files (Diabotical map folder - %appdata%/diabotical/maps). It will read every map in that folder, after that you can select which map to port.
+Put .exe in folder with .rbe files (Diabotical map folder - `%appdata%/diabotical/maps`). It will read every map in that folder, after that you can select which map to port.
 
 ## Additional info
 1. It respects block type (diagonal/solid) and creates corresponded prop.
