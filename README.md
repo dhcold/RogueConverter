@@ -25,14 +25,7 @@ Write me in Discord: `@dhcold`
   - hst - for helping me to understand parsing/writing process and helping overall during process. Check out [his tools](https://github.com/marconett/diabotical-tools) too!
   - GD Studio - for creating amazing games 🫶
 
-## Installation
-### Clone the repository:
-```
-git clone https://github.com/your-username/your-repository.git
-```
-Include RogueMaker.dll in your C# project references.
-
-## Usage
+## If you want to do something with the code yourself (examples)
 ### Loading a Map
 ```
 using RogueMaker;
