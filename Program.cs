@@ -57,7 +57,9 @@ namespace RogueMaker
                     $"\n* Map file size: {fileSizeInMB:F2} MB" +
                     "\n**********************" +
                     "\n* Create different props for different block materials?" +
-                    "\n* Enter [1] to create different props with different materials \n* Enter [0] to skip (every prop material will be the same) \n* Enter [anything else] to select another map:\n");
+                    "\n* Enter [1] to create different props with different materials " +
+                    "\n* Enter [0] to skip (every prop material will be the same) " +
+                    "\n* Enter [anything else] to select another map:\n");
                 string materialInput = Console.ReadLine().Trim();
                 if (materialInput != "1" && materialInput != "0")
                 {
@@ -74,7 +76,7 @@ namespace RogueMaker
                     MapEditor mapEditor = new MapEditor();
                     bool differMaterials = materialInput == "1" ? true : false;
                     map = mapEditor.PortMap(map, differMaterials);
-                    Console.WriteLine($"* Entities (new count): {map.entities.Count()}");
+                    Console.WriteLine($"\n* Entities (new count): {map.entities.Count()}");
 
 
                     // SAVING THE MAP
@@ -94,8 +96,8 @@ namespace RogueMaker
                     Console.WriteLine(
                         $"* NEW file size: {fileSizeInMB:F2} MB" +
                         $"\n******* SUCCESS! ******" +
-                        $"\n* Saving converted map into DiaboticalRogue appdata folder (into game-folder)..." + 
-                        $"\n* To edit your map type in console: " +
+                        $"\n* Saving converted map into DiaboticalRogue appdata folder (into game folder)..." + 
+                        $"\n* To edit converted map type in console: " +
                         $"\n* /edit {fileName}" + 
                         "\n**********************");
                 }

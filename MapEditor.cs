@@ -25,20 +25,21 @@ namespace RogueMaker
 
         public List<Entity> CalculatePropWalls(MapObject map, bool differMaterials)
         {
-            // CHECKING IF THERE IS NOTHING TO CONVERT
             List<Block> blocks = map.blocks;
             if (blocks == null || blocks.Count == 0) { return map.entities; }
 
             List<Entity> entities = new List<Entity>();
             int propCount = 1;
-            Vector3 position, rotation, scale; 
+            Vector3 position, rotation, scale;
             float uvScale;
             string name;
             List<Tuple<string, string>> properties;
             Dictionary<Vector3, Block> blockDict = blocks.ToDictionary(b => b.position);
             List<string> materials = MaterialLibrary.Materials;
 
-            // DOING WHILE BLOCKS ARE AVAILABLE TO CONVERT
+            int totalBlocks = blockDict.Count;
+            int processedBlocks = 0;
+
             while (blockDict.Count > 0)
             {
                 Block startingBlock = blockDict.Values
@@ -47,19 +48,17 @@ namespace RogueMaker
                     .ThenBy(b => b.position.X)
                     .First();
                 int startingMaterial = differMaterials ? GetMostProbableMaterial(startingBlock, blockDict) : 0;
-                position             = new Vector3(startingBlock.position.X * 40, startingBlock.position.Y * 20, startingBlock.position.Z * 40);
+                position = new Vector3(startingBlock.position.X * 40, startingBlock.position.Y * 20, startingBlock.position.Z * 40);
 
-                // IF BLOCK DIAGONAL
                 if (startingBlock.type == 3)
                 {
-                    float propHeight    = 1;
-                    List<Block> sorted  = new List<Block> { startingBlock };
-                    // CHECKING IF NEXT BLOCK IS SAME AS STARTING AND EXIST ON THE MAP (CALCULATING XZ -> XYZ)
+                    float propHeight = 1;
+                    List<Block> sorted = new List<Block> { startingBlock };
                     for (float i = startingBlock.position.Y + 1; blockDict.ContainsKey(new Vector3(startingBlock.position.X, i, startingBlock.position.Z)); i++)
                     {
                         Block nextBlock = blockDict[new Vector3(startingBlock.position.X, i, startingBlock.position.Z)];
-                        bool typeDiff   = nextBlock.type == startingBlock.type;                                                
-                        bool orient     = nextBlock.orient == startingBlock.orient;
+                        bool typeDiff = nextBlock.type == startingBlock.type;
+                        bool orient = nextBlock.orient == startingBlock.orient;
                         if (differMaterials)
                         {
                             if (GetMostProbableMaterial(nextBlock, blockDict) != startingMaterial)
@@ -74,19 +73,20 @@ namespace RogueMaker
                         sorted.Add(nextBlock);
                         propHeight++;
                     }
-                    // REMOVING CONVERTED BLOCKS
+
                     foreach (Block block in sorted)
                     {
                         blockDict.Remove(block.position);
+                        processedBlocks++;
+                        UpdateProgress(processedBlocks, totalBlocks);
                     }
 
-                    // CREATING DIAGONAL WALL
-                    name        = $"prop_converted_diagonal_wall_{propCount}";
-                    position    = new Vector3(startingBlock.position.X * 40, startingBlock.position.Y * 20, startingBlock.position.Z * 40);
-                    propHeight  = (float)(propHeight < 0.25f ? 0.25f : propHeight); 
-                    scale       = new Vector3(propHeight / 4f, 0.5f, 0.5f);
-                    rotation    = new Vector3(0f, 0f, 90f);
-                    if      (startingBlock.orient == 0) { rotation.Y = 90f; position.X += 40f; }
+                    name = $"prop_converted_diagonal_wall_{propCount}";
+                    position = new Vector3(startingBlock.position.X * 40, startingBlock.position.Y * 20, startingBlock.position.Z * 40);
+                    propHeight = (float)(propHeight < 0.25f ? 0.25f : propHeight);
+                    scale = new Vector3(propHeight / 4f, 0.5f, 0.5f);
+                    rotation = new Vector3(0f, 0f, 90f);
+                    if (startingBlock.orient == 0) { rotation.Y = 90f; position.X += 40f; }
                     else if (startingBlock.orient == 1) { rotation.Y = 0f; position.Z += 40f; position.X += 40f; }
                     else if (startingBlock.orient == 2) { rotation.Y = -90f; position.Z += 40f; }
                     else if (startingBlock.orient == 3) { rotation.Y = 180f; }
@@ -102,18 +102,16 @@ namespace RogueMaker
                         new Tuple<string, string>("override_effect_0", $"{materials[startingMaterial]}"),
                         new Tuple<string, string>("uv_scale_x", $"{uvScaleX.ToString(CultureInfo.InvariantCulture)}"),
                         new Tuple<string, string>("uv_scale_y", $"{scale.Z.ToString(CultureInfo.InvariantCulture)}"),
-                    };                    
+                    };
                 }
-                // IF SOLID BLOCK (-> RECTANGLE PROP)
                 else
                 {
-                    // CALCULATING WIDTH (X)
                     List<Block> sortedX = new List<Block> { startingBlock };
-                    int propWidth       = 1;
+                    int propWidth = 1;
                     for (float i = startingBlock.position.X + 1; blockDict.ContainsKey(new Vector3(i, startingBlock.position.Y, startingBlock.position.Z)); i++)
                     {
                         Block nextBlock = blockDict[new Vector3(i, startingBlock.position.Y, startingBlock.position.Z)];
-                        bool typeDiff   = nextBlock.type == startingBlock.type;
+                        bool typeDiff = nextBlock.type == startingBlock.type;
                         if (differMaterials)
                         {
                             if (GetMostProbableMaterial(nextBlock, blockDict) != startingMaterial)
@@ -130,9 +128,8 @@ namespace RogueMaker
                     }
                     float scaleX = propWidth;
 
-                    // CALCULATING HEIGHT (X -> XY)
                     List<Block> sortedY = new List<Block>(sortedX);
-                    float propHeight    = 1;
+                    float propHeight = 1;
                     bool layerCompleteY = true;
                     while (layerCompleteY)
                     {
@@ -143,7 +140,7 @@ namespace RogueMaker
                             if (blockDict.ContainsKey(nextPos))
                             {
                                 Block nextBlock = blockDict[nextPos];
-                                bool typeDiff   = nextBlock.type == startingBlock.type;
+                                bool typeDiff = nextBlock.type == startingBlock.type;
                                 if (differMaterials)
                                 {
                                     if (GetMostProbableMaterial(nextBlock, blockDict) != startingMaterial)
@@ -152,7 +149,7 @@ namespace RogueMaker
                                         break;
                                     }
                                 }
-                                
+
                                 if (!typeDiff)
                                 {
                                     layerCompleteY = false;
@@ -174,9 +171,8 @@ namespace RogueMaker
                     }
                     float scaleY = propHeight;
 
-                    // CALCULATING DEPTH (XY -> XYZ)
                     List<Block> sortedZ = new List<Block>(sortedY);
-                    float propDepth     = 1;
+                    float propDepth = 1;
                     bool layerCompleteZ = true;
                     while (layerCompleteZ)
                     {
@@ -187,7 +183,7 @@ namespace RogueMaker
                             if (blockDict.ContainsKey(nextPos))
                             {
                                 Block nextBlock = blockDict[nextPos];
-                                bool typeDiff   = nextBlock.type == startingBlock.type;
+                                bool typeDiff = nextBlock.type == startingBlock.type;
                                 if (differMaterials)
                                 {
                                     if (GetMostProbableMaterial(nextBlock, blockDict) != startingMaterial)
@@ -197,7 +193,7 @@ namespace RogueMaker
                                     }
                                 }
                                 if (!typeDiff)
-                                {                                
+                                {
                                     layerCompleteZ = false;
                                     break;
                                 }
@@ -217,22 +213,22 @@ namespace RogueMaker
                     }
                     float scaleZ = propDepth;
 
-                    // REMOVING CONVERTED BLOCKS
                     foreach (Block block in sortedZ)
                     {
                         blockDict.Remove(block.position);
+                        processedBlocks++;
+                        UpdateProgress(processedBlocks, totalBlocks);
                     }
 
-                    // CREATING RECTANGLE PROP
-                    name        = $"prop_converted_wall_{propCount}";
-                    scale       = new Vector3(scaleX / 2, scaleY / 4, scaleZ / 2); // (default scale of invis_box prop to 1 block)
-                    rotation    = new Vector3(0, 0, 0);
+                    name = $"prop_converted_wall_{propCount}";
+                    scale = new Vector3(scaleX / 2, scaleY / 4, scaleZ / 2); // (default scale of invis_box prop to 1 block)
+                    rotation = new Vector3(0, 0, 0);
                     float uvScaleX = scale.X;
                     if (scale.Y > scale.X)
                     {
                         uvScaleX = scale.Y;
                     }
-                    properties  = new List<Tuple<string, string>>
+                    properties = new List<Tuple<string, string>>
                     {
                         new Tuple<string, string>("model", "invisible_box_80_corner"),
                         new Tuple<string, string>("no_show", "false"),
@@ -243,18 +239,24 @@ namespace RogueMaker
                 }
                 entities.Add(new Entity(name, position, rotation, scale, properties));
                 propCount++;
-
-                /*// LOG
-                Console.WriteLine($"Added new entity - {name}. Position: {position}. Scale: {scale}. Rotation: {rotation}");*/
             }
 
             foreach (Entity entity in entities)
             {
                 map.entities.Add(entity);
             }
-            
+
             return map.entities;
         }
+
+        private void UpdateProgress(int processed, int total)
+        {
+            // PROGRESS BAR
+            int progress = (int)((double)processed / total * 100);
+            Console.CursorLeft = 0;
+            Console.Write($"* Progress: {progress}%");
+        }
+
 
         public List<Entity> RemoveNonInvisibleProps(List<Entity> entities)
         {
@@ -272,6 +274,7 @@ namespace RogueMaker
 
         public List<Entity> ReplaceRamps(List<Entity> entities)
         {
+            // TRYING TO SAVE TT RAMPS
             foreach (Entity entity in entities)
             {
                 bool containsInvisModel = entity.properties.Any(prop => 
@@ -310,7 +313,7 @@ namespace RogueMaker
         }
         public int GetMostProbableMaterial(Block block, Dictionary<Vector3, Block> blockDict)
         {
-            // Стороны блока и их направления
+            // FACES OF BLOCK, CHECKING IN EACHSIDE IF FACE IS VISIBLE TO PLAYER
             var sides = new Dictionary<string, Vector3>
             {
                 { "front", new Vector3(0, 0, 1) },
@@ -321,12 +324,12 @@ namespace RogueMaker
                 { "bottom", new Vector3(0, -1, 0) }
             };
 
-            // Группировка материалов только видимых сторон
+            // GROUPING ONLY BY VISIBLE FACES
             var visibleMaterials = block.materials
                 .Where(kv => IsSideVisible(block, sides[kv.Key], blockDict))
                 .GroupBy(kv => kv.Value)
                 .OrderByDescending(g => g.Count())
-                .ThenBy(g => g.Key) // Если более одного, то берем первый
+                .ThenBy(g => g.Key) // IF MORE THAN ONE THEN TAKING FIRST
                 .FirstOrDefault();
 
             return visibleMaterials?.Key ?? 0;
