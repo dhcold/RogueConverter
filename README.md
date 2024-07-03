@@ -2,7 +2,7 @@
 RogueConverter is a C# library designed to handle loading and saving map data in a custom binary format. Main idea behind this app is to replace all blocks with rectangle/rectrangle props
 
 ## Download .exe
-I'll try to keep latest version here: [.EXE URL (Google Drive)](https://drive.google.com/file/d/1BO69yjoL9p5SPcoHMbUC9nKWgSLO8lrT/view?usp=drive_link)
+[DOWNLOAD HERE](https://github.com/dhcold/RogueConverter/releases/tag/exe)
 
 ## How to use
 Put .exe in folder with .rbe files (Diabotical map folder - %appdata%/diabotical/maps). It will read every map in that folder, after that you can select which map to port.
