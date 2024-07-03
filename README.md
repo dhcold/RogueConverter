@@ -1,5 +1,5 @@
 # RogueConverter
-RogueConverter is a C# library designed to handle loading and saving map data in a custom binary format. Main idea behind this app is to replace all blocks with rectangle/rectrangle props
+RogueConverter is a C# tool that converts all blocks to diagonal/rectrangle props. It reads map data and writing it again.
 
 ## Download .exe
 [DOWNLOAD HERE](https://github.com/dhcold/RogueConverter/releases/tag/exe)
