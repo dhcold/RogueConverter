@@ -1,4 +1,5 @@
-﻿using static System.Net.Mime.MediaTypeNames;
+﻿using System.Globalization;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace RogueMaker
 {
@@ -113,7 +114,11 @@ namespace RogueMaker
                             "\n* Enter new scale for a map (for example 1.2):");
 
                         string strScale = Console.ReadLine().Trim();
-                        bool success = float.TryParse(strScale, out float floatScale);
+                        bool success = float.TryParse(strScale, NumberStyles.Float, CultureInfo.CurrentCulture, out float floatScale);
+                        if (!success)
+                        {
+                            success = float.TryParse(strScale, NumberStyles.Float, CultureInfo.InvariantCulture, out floatScale);
+                        }
                         if (success)
                         {
                             Console.WriteLine("\n" + defaultLane() +
