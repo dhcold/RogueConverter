@@ -1,4 +1,5 @@
 ﻿using System.Globalization;
+using System.Numerics;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace RogueMaker
@@ -70,7 +71,7 @@ namespace RogueMaker
                     "\n* [2] * Rescale map" +
                     "\n*  *  *" +
                     "\n* [0] * Back\n");
-                string operationInput = Console.ReadLine();
+                string operationInput = Console.ReadLine().Trim();
 
                 // 1. CONVERTING BLOCKS
                 if (operationInput == "1" || operationInput == "2")
@@ -113,19 +114,17 @@ namespace RogueMaker
                         fileName = $"{fileName}_rescaled";
                         /// SELECT NEW SCALE OF THE MAP (for example 1.2)
                         Console.WriteLine("\n" + defaultLane() +
-                            "\n* Enter new scale for a map (for example 1.2):");
+                            "\n* Reminder: Each block in Diabotical is 40u*20u*40u" + 
+                            "\n* Enter new scale [XYZ] for a map (either 1 value or 3: '1,2' or '1*1.2*3'):");
 
                         string strScale = Console.ReadLine().Trim();
-                        bool success = float.TryParse(strScale, NumberStyles.Float, CultureInfo.CurrentCulture, out float floatScale);
-                        if (!success)
-                        {
-                            success = float.TryParse(strScale, NumberStyles.Float, CultureInfo.InvariantCulture, out floatScale);
-                        }
-                        if (success)
+                        Vector3 scaleVector = ParseVector3(strScale);
+                        if (scaleVector != Vector3.Zero)
                         {
                             Console.WriteLine("\n" + defaultLane() +
+                                $"\n* New scale for the map: ({scaleVector.X}; {scaleVector.Y}; {scaleVector.Z})" +
                                 "\n* Starting rescaling...");
-                            map = mapEditor.RescaleMap(map, floatScale);
+                            map = mapEditor.RescaleMap(map, scaleVector);
                         }
                         else
                         {
@@ -183,6 +182,46 @@ namespace RogueMaker
         {
             return "************************"; 
         }
-        
+        static Vector3 ParseVector3(string input)
+        {
+            // Replace common delimiters with spaces for easy splitting
+            input = input.Replace(';', ' ').Replace('\t', ' ').Replace('*', ' ').Replace('x', ' ').Replace('-', ' ').Replace('_', ' ');
+
+            // Split input by spaces
+            string[] parts = input.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Parse as single value or as three values
+            if (parts.Length == 1 && float.TryParse(parts[0], NumberStyles.Float, CultureInfo.CurrentCulture, out float singleValue))
+            {
+                return new Vector3(singleValue, singleValue, singleValue);
+            }
+            else if (parts.Length == 3 &&
+                TryParseFloat(parts[0], out float x) &&
+                TryParseFloat(parts[1], out float y) &&
+                TryParseFloat(parts[2], out float z))
+            {
+                return new Vector3(x, y, z);
+            }
+
+            // Return Vector3.Zero in case of an invalid input
+            return Vector3.Zero;
+        }
+
+        static bool TryParseFloat(string input, out float result)
+        {
+            // Try parsing using the current culture
+            if (float.TryParse(input, NumberStyles.Float, CultureInfo.CurrentCulture, out result))
+            {
+                return true;
+            }
+
+            // If it fails, try parsing using the invariant culture
+            if (float.TryParse(input, NumberStyles.Float, CultureInfo.InvariantCulture, out result))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

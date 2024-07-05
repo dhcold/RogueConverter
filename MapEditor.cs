@@ -22,7 +22,7 @@ namespace RogueMaker
             return map;
         }
 
-        public MapObject RescaleMap(MapObject map, float rescale)
+        public MapObject RescaleMap(MapObject map, Vector3 rescaleVector)
         {
             List<Entity> rescaledEntities = new List<Entity>();
             int processedEntities = 0;
@@ -31,8 +31,14 @@ namespace RogueMaker
             foreach (Entity entity in map.entities)
             {
                 // Calculate the new position and scale
-                Vector3 newPosition = entity.position * rescale;
-                Vector3 newScale = entity.scale * rescale;
+                Vector3 newPosition = new Vector3(
+                    entity.position.X * rescaleVector.X, 
+                    entity.position.Y * rescaleVector.Y, 
+                    entity.position.Z * rescaleVector.Z);
+                Vector3 newScale = new Vector3(
+                    entity.scale.X * rescaleVector.X, 
+                    entity.scale.Y * rescaleVector.Y, 
+                    entity.scale.Z * rescaleVector.Z);
 
                 // Create a new Entity with the rescaled position and scale
                 Entity rescaledEntity = new Entity(
@@ -42,6 +48,7 @@ namespace RogueMaker
                     newScale,
                     entity.properties
                 );
+
                 processedEntities++;
                 UpdateProgress(processedEntities, totalEntities);
                 rescaledEntities.Add(rescaledEntity);
@@ -330,13 +337,13 @@ namespace RogueMaker
             }
             return entities;
         }
-
         
         public bool IsSideVisible(Block block, Vector3 direction, Dictionary<Vector3, Block> blockDict)
         {
             Vector3 neighborPosition = block.position + direction;
             return !blockDict.ContainsKey(neighborPosition);
         }
+
         public int GetMostProbableMaterial(Block block, Dictionary<Vector3, Block> blockDict)
         {
             // FACES OF BLOCK, CHECKING IN EACHSIDE IF FACE IS VISIBLE TO PLAYER
