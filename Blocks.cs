@@ -36,7 +36,7 @@ namespace RogueMaker
             this.materials = materials;
             this.materialsOffset = materialsOffset;
             this.u1 = u1 == null ? new byte[12] : u1;
-            this.u2 = u2 == null ? new byte() : u2;
+            this.u2 = u2 == 0 ? new byte() : u2;
             this.u3 = u3 == null ? new byte[6] : u3;
             this.u4 = u4 == null ? new byte[2] : u4;
         }

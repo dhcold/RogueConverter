@@ -17,9 +17,36 @@ namespace RogueMaker
         {
             map.entities = RemoveNonInvisibleProps(map.entities);
             map.entities = ReplaceRamps(map.entities);
-            map.entities = CalculatePropWalls(map, differMaterials);            
+            map.entities = CalculatePropWalls(map, differMaterials); 
             map.blocks = new List<Block> { /*map.blocks[0]*/ };
+            return map;
+        }
 
+        public MapObject RescaleMap(MapObject map, float rescale)
+        {
+            List<Entity> rescaledEntities = new List<Entity>();
+            int processedEntities = 0;
+            int totalEntities = map.entities.Count;
+
+            foreach (Entity entity in map.entities)
+            {
+                // Calculate the new position and scale
+                Vector3 newPosition = entity.position * rescale;
+                Vector3 newScale = entity.scale * rescale;
+
+                // Create a new Entity with the rescaled position and scale
+                Entity rescaledEntity = new Entity(
+                    entity.name,
+                    newPosition,
+                    entity.rotation, // Rotation remains unchanged
+                    newScale,
+                    entity.properties
+                );
+                processedEntities++;
+                UpdateProgress(processedEntities, totalEntities);
+                rescaledEntities.Add(rescaledEntity);
+            }
+            map.entities = rescaledEntities;
             return map;
         }
 
@@ -248,7 +275,7 @@ namespace RogueMaker
 
             return map.entities;
         }
-
+        
         private void UpdateProgress(int processed, int total)
         {
             // PROGRESS BAR
@@ -256,7 +283,6 @@ namespace RogueMaker
             Console.CursorLeft = 0;
             Console.Write($"* Progress: {progress}%");
         }
-
 
         public List<Entity> RemoveNonInvisibleProps(List<Entity> entities)
         {
