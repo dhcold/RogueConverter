@@ -12,7 +12,7 @@ RogueConverter is a C# tool for Diabotical / Diabotical Rogue, that is capable o
 5. I tried to convert ramps, but they are misplaced for now (maybe i'll found solution for converting any `invis` props into new `blockout` props)
 
 ## Download latest .exe
-[DOWNLOAD HERE](https://github.com/dhcold/RogueConverter/releases/tag/exe)
+[DOWNLOAD HERE](https://github.com/dhcold/RogueConverter/releases)
 
 ## How to use
 ### How to read maps
