@@ -1,6 +1,15 @@
 # RogueConverter
 ## What it does
-RogueConverter is a C# tool for Diabotical / Diabotical Rogue, that converts all blocks from the map into diagonal/rectrangle props. It reads map data and writing it again.
+RogueConverter is a C# tool for Diabotical / Diabotical Rogue, that is capable of: 
+- Converting all blocks from the map into diagonal/rectrangle props.
+- Rescaling converted map (making it bigger or smaller)
+
+## Additional info
+1. Converting respects block type (diagonal/solid) and creates corresponded prop
+2. You can select if block material should be taken into consideration while converting them (so you can get different materials on converted props aswell. Otherwise every prop will be with same material)
+3. It removes any original prop, that starts with `prop_` and isn't `invis` prop
+4. All other entities (triggers, tps, lights, etc) stays the same
+5. I tried to convert ramps, but they are misplaced for now (maybe i'll found solution for converting any `invis` props into new `blockout` props)
 
 ## Download .exe
 [DOWNLOAD HERE](https://github.com/dhcold/RogueConverter/releases/tag/exe)
@@ -15,15 +24,7 @@ RogueConverter is a C# tool for Diabotical / Diabotical Rogue, that converts all
   ![image](https://github.com/dhcold/RogueConverter/assets/30022484/8406f085-0273-4814-8e6c-4dc9a2f70ca9)
 - You can edit ported map right away, by typing command (or copy from app output) to in-game console `/edit mapname_rogue` 
 
-
-## Additional info
-1. It respects block type (diagonal/solid) and creates corresponded prop
-2. You can select if block material should be taken into consideration while converting blocks (so you can get different materials on converted props aswell. Otherwise every prop will be with same material)
-3. It removes any original prop, that starts with `prop_` and isn't `invis` prop
-4. All other entities (triggers, tps, lights, etc) stays the same
-5. I tried to convert ramps, but they are misplaced for now (maybe i'll found solution for converting any `invis` props into new `blockout` props)
-
-## Example:
+## Example
 ![image](https://github.com/dhcold/RogueConverter/assets/30022484/1751c6e6-63b7-4659-a86e-b446625474cd) ![image2](https://github.com/dhcold/RogueConverter/assets/30022484/6dbad21a-c521-4095-b8df-54410d251589)
 
 ## If you have any questions
