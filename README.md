@@ -15,14 +15,16 @@ RogueConverter is a C# tool for Diabotical / Diabotical Rogue, that is capable o
 [DOWNLOAD HERE](https://github.com/dhcold/RogueConverter/releases)
 
 ## How to use
-### How to read maps
+### Launching app
 - Put .exe in a folder with .rbe files (Diabotical map folder - `%appdata%/Diabotical/Maps`). For now it works only with original/parsed Diabotical maps. If you save map in-game (Diabotical Rogue), it will update version and no longer can be loaded in this tool.
 
 ![image](https://github.com/dhcold/RogueConverter/assets/30022484/3e1dfb2a-9854-4a7e-a055-ad3b00b5eb9d)
 - It will read every .rbe map in that folder, after that you can select which map you want to load
 ![image](https://github.com/dhcold/RogueConverter/assets/30022484/79864d9d-8f4c-4327-b4f7-807a2de606ef)
+### Loading a map
 - If map is loaded, you will get short map info. From this point you can select what operation you want to do with the map
 ![image](https://github.com/dhcold/RogueConverter/assets/30022484/5074248d-239f-4da0-a2e3-f16c29052d08)
+### Converting/Rescaling and Saving the results
 - After executing operation it will automatically generate new file in Diabotical Rogue folder (`%appdata%/DiaboticalRogue/Maps`). With postfix `_rogue` for converted maps, and `_rescaled` for scaled maps.
 ![image](https://github.com/dhcold/RogueConverter/assets/30022484/9ab35fd9-11da-445e-a888-34842d09254c)
 - You can edit new map right away, by typing command (or copy from app output) to in-game console `/edit newmapname` 
