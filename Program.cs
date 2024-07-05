@@ -77,6 +77,7 @@ namespace RogueMaker
                 {
                     if (operationInput == "1")
                     {
+                        fileName = $"{fileName}_rogue";
                         /// SELECT CONVERSION METHOD
                         /// 1 - function checks each block material, and will create entity once new material found on next block
                         /// 2 - function doesnt check materials. All converted props will have same material
@@ -109,6 +110,7 @@ namespace RogueMaker
                     }
                     else if (operationInput == "2")
                     {
+                        fileName = $"{fileName}_rescaled";
                         /// SELECT NEW SCALE OF THE MAP (for example 1.2)
                         Console.WriteLine("\n" + defaultLane() +
                             "\n* Enter new scale for a map (for example 1.2):");
@@ -139,7 +141,7 @@ namespace RogueMaker
                     {
                         targetDir = Environment.CurrentDirectory + @"\";
                     }
-                    fileName = $"{fileName}_rescaled";
+                    
                     string savePath = Path.Combine(targetDir, $"{fileName}.rbe");
                     mapHandler.SaveMap(map, savePath);
 
